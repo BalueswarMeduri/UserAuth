@@ -32,7 +32,6 @@ const Login = () => {
         body: JSON.stringify(formData)
       });
       const data = await response.json();
-      console.log(data);
       
       if (!response.ok) {
         toast.error("Login failed. Please check your credentials.");
@@ -40,7 +39,13 @@ const Login = () => {
       }
       dispatch(setUser(data.user))
       toast.success("Login successful! Redirecting...");
-      setTimeout(() => navigate('/'), 2000); // Wait 2 seconds before redirecting
+      
+      // Redirect based on role
+      if (data.user.role === 'admin') {
+        setTimeout(() => navigate('/admin'), 2000);
+      } else {
+        setTimeout(() => navigate('/user'), 2000);
+      }
     } catch (error) {
       console.error('Error during login:', error);
       toast.error("Something went wrong. Please try again later.");
@@ -88,7 +93,7 @@ const Login = () => {
                 <input
                   id="password"
                   name="password"
-                   placeholder='enter you password'
+                  placeholder='enter you password'
                   type="password"
                   value={password}
                   onChange={handleChange}
@@ -96,6 +101,11 @@ const Login = () => {
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white outline outline-1 px-3 py-1.5 text-base text-gray-900"
                 />
+              </div>
+              <div className="flex items-center justify-end mt-2">
+                <Link to="/forgot-password" className="text-sm font-medium text-[#fac638] hover:underline">
+                  Forgot password?
+                </Link>
               </div>
             </div>
 
