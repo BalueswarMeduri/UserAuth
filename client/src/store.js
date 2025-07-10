@@ -1,6 +1,6 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
-import sessionStorage from 'redux-persist/es/storage/session'; // Use session storage
+import storage from 'redux-persist/lib/storage'; // Use localStorage
 import { userSlice } from './redux/user/user.slice'; // Make sure this is a slice, not just reducer
 
 // Combine reducers
@@ -11,7 +11,7 @@ const rootReducer = combineReducers({
 // Persist config
 const persistConfig = {
   key: 'root',
-  storage: sessionStorage
+  storage // now uses localStorage
 };
 
 // Wrap rootReducer with persistReducer

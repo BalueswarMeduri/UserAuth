@@ -226,3 +226,14 @@ export const resetPassword = async (req, res) => {
         });
     }
 };
+
+// Get all users (excluding admins)
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find({ role: 'user' }, '_id name email');
+        res.status(200).json({ success: true, users });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Failed to fetch users' });
+    }
+};

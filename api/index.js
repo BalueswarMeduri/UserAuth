@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors'
 import mongoose from 'mongoose';
 import AuthRoute from './routes/AuthRoute.js';
+import QrRoute from './routes/QrRoute.js';
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ app.use(cors({
 //route setup
 
 app.use('/api/auth',AuthRoute)
+app.use('/api/qr', QrRoute);
 
 
 

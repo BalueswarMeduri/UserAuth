@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { removeUser } from "../redux/user/user.slice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useSelector((state) => state.user);
   console.log(user);
 
@@ -36,6 +37,21 @@ const Navbar = () => {
     }
   };
 
+  // Smooth scroll to section
+  const handleNavScroll = (e, sectionId) => {
+    e.preventDefault();
+    if (location.pathname !== "/") {
+      navigate(`/#${sectionId}`);
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <>
       <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f4f0e6] px-10 py-3 bg-[#fcfbf8]">
@@ -54,23 +70,20 @@ const Navbar = () => {
               Home
             </Link>
             <a
-              href="#"
+              href="#features"
               className="text-[#1c180d] text-sm font-medium leading-normal"
+              onClick={e => handleNavScroll(e, "features")}
             >
               Features
             </a>
             <a
-              href="#"
+              href="#pricing"
               className="text-[#1c180d] text-sm font-medium leading-normal"
+              onClick={e => handleNavScroll(e, "pricing")}
             >
               Pricing
             </a>
-            <a
-              href="#"
-              className="text-[#1c180d] text-sm font-medium leading-normal"
-            >
-              Support
-            </a>
+           
           </div>
           {!user.isLoggedIn ? (
             <div className="flex gap-2">
@@ -89,10 +102,14 @@ const Navbar = () => {
             <div className="flex gap-2">
               <Link to={user.user.role === "admin" ? "/admin" : "/user"}>
                 <button className="flex p-4 rounded-lg bg-[#f4f0e6] text-[#1c180d] text-sm font-bold">
-                  page
+                  Dashboard
                 </button>
               </Link>
-
+              <Link to="/scanner">
+                <button className="flex p-4 rounded-lg bg-[#e3f2fd] text-[#1c180d] text-sm font-bold">
+                  QR Scanner
+                </button>
+              </Link>
               <button
                 onClick={handlelogout}
                 className="flex p-3 rounded-lg bg-[#fac638] text-[#1c180d] text-sm font-bold"
